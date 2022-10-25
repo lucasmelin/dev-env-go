@@ -1,0 +1,16 @@
+version: "3"
+
+vars:
+  # Valid GOOS and GOARCH combination https://go.dev/doc/install/source#environment
+  PLATFORM: local
+
+tasks:
+  build:
+    cmds:
+      - docker build . --target bin --output bin/ --platform {{.PLATFORM}}
+  unit-test:
+    cmds:
+      - docker build . --target unit-test
+  lint:
+    cmds:
+      - docker build . --target lint
