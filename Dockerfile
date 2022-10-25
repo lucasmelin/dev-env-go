@@ -17,8 +17,10 @@ FROM base AS build
 ARG TARGETOS
 ARG TARGETARCH
 # Build the binary, mounting the Go compiler cache
-RUN --mount=type=cache,target=.,target=/go/pkg/mod,target=/root/.cache/go-build \
-    GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o /out/example .
+RUN --mount=target=. \
+    --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    GOOS=${TARGETOS} GOARCH=${TARGETARCH} GOFLAGS=-buildvcs=false go build -o /out/example .
 
 
 FROM base AS unit-test
